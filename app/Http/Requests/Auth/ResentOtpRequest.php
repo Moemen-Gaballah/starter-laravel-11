@@ -5,9 +5,10 @@ namespace App\Http\Requests\Auth;
 use App\Traits\APIResponse;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ResentOtpRequest extends FormRequest
 {
     use APIResponse;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,8 +25,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-//            'password' => 'required|string',
+            'phone' => ['required', 'exists:users,phone', 'numeric', 'regex:/^01[0-9]{9}$/'],
         ];
     }
 }

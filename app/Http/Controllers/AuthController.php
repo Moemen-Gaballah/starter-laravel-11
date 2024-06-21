@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\CheckOtpRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ResentOtpRequest;
 use App\Http\Resources\User\BasicInfoResource;
 use App\Models\User;
 use App\Traits\APIResponse;
+use App\Traits\GenerateRandom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    use APIResponse;
+    use APIResponse, GenerateRandom;
 
     public function login(LoginRequest $request)
     {
@@ -36,13 +39,29 @@ class AuthController extends Controller
         return $this->successResponse($data);
     }
 
-    public function register(RegisterRequest $request){
+    public function register(RegisterRequest $request)
+    {
 
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'otp' => $this->GenerateRandom4DigitNumber()
         ]);
+
+        // TODO Send OTP
+
+        return $this->successResponse(null, 'we have just sent otp code to your phone.');
+    }
+
+    public function loginByOtp(CheckOtpRequest $request)
+    {
+        $user = User::where('phone', $request->phone)->where('otp', $request->otp)->first();
+
+        if (!$user) {
+            return $this->errorResponse('Incorrect Credentials', 401);
+        }
 
         $token = Auth::login($user);
 
@@ -54,7 +73,19 @@ class AuthController extends Controller
             ]
         ];
 
-        return $this->successResponse($data, 'User created successfully');
+        return $this->successResponse($data, 'User Login Successfully');
+    }
+
+    public function resentOtp(ResentOtpRequest $request)
+    {
+        $user = User::where('phone', $request->phone)->first();
+
+        $user->otp = $this->GenerateRandom4DigitNumber();
+        $user->save();
+
+        // TODO Send OTP
+
+        return $this->successResponse(null, 'we have just sent otp code to your phone.');
     }
 
     public function logout()
@@ -66,14 +97,15 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        return response()->json([
-            'status' => 'success',
+        $data = [
             'user' => new BasicInfoResource(Auth::user()),
             'authorization' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
             ]
-        ]);
+        ];
+
+        return $this->successResponse($data);
     }
 
 }

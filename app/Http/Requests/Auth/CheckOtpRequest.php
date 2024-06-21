@@ -5,7 +5,7 @@ namespace App\Http\Requests\Auth;
 use App\Traits\APIResponse;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class CheckOtpRequest extends FormRequest
 {
     use APIResponse;
     /**
@@ -24,8 +24,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-//            'password' => 'required|string',
+            //
         ];
     }
 }

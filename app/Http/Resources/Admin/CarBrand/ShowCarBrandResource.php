@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Admin\CarBrand;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BasicInfoResource extends JsonResource
+class ShowCarBrandResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,9 @@ class BasicInfoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'created_at' => $this->created_at
+            'name_ar' => $this->name_ar,
+            'name_en' => $this->name_en,
+            'image' => $this->image_path
         ];
     }
 }

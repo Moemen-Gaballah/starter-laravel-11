@@ -19,11 +19,15 @@ class UserSeeder extends Seeder
             'name' => 'Moemen Gaballa',
             'email' => 'moemengaballa@gmail.com',
             'password' => '12345678',
+            'phone' => '01212283207',
+            'type' => 'admin',
             'email_verified_at' => Carbon::now()
         ],[
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => '12345678',
+            'phone' => '01234567890',
+            'type' => 'admin',
             'email_verified_at' => Carbon::now()
         ]]);
     }

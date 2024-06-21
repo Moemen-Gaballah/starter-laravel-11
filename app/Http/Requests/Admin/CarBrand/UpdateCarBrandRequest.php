@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Admin\CarBrand;
 
 use App\Traits\APIResponse;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class UpdateCarBrandRequest extends FormRequest
 {
     use APIResponse;
     /**
@@ -24,8 +24,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-//            'password' => 'required|string',
+            "name_ar" => 'required|unique:car_brands,name_ar|string|max:255',
+            "name_en" => 'required|unique:car_brands,name_en|string|max:255',
+            "image" => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

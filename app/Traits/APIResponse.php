@@ -21,9 +21,9 @@ trait APIResponse
     protected function successResponse($data, $message = 'Success', $status = 200): JsonResponse
     {
         return response()->json([
-            'status' => 'success',
+            'data' => $data,
+            'status' => $status,
             'message' => $message,
-            'data' => $data
         ], $status);
     }
 
@@ -38,9 +38,9 @@ trait APIResponse
     protected function errorResponse($message = 'Error', $status = 400, $data = null): JsonResponse
     {
         return response()->json([
-            'status' => 'error',
+            'data' => $data,
+            'status' => $status,
             'message' => $message,
-            'data' => $data
         ], $status);
     }
 
@@ -56,9 +56,9 @@ trait APIResponse
     protected function customResponse($status, $message, $data = null, $statusCode = 200): JsonResponse
     {
         return response()->json([
+            'data' => $data,
             'status' => $status,
             'message' => $message,
-            'data' => $data
         ], $statusCode);
     }
 
@@ -72,7 +72,7 @@ trait APIResponse
         $errors = $validator->errors();
 
         $response = response()->json([
-            'status' => 'error',
+            'status' => 422,
             'message' => 'Validation failed',
             'errors' => $errors,
 //            'data' => null
