@@ -3,6 +3,10 @@
 namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
+
 
 trait APIResponse
 {
@@ -56,5 +60,24 @@ trait APIResponse
             'message' => $message,
             'data' => $data
         ], $statusCode);
+    }
+
+    /**
+     *
+     * Custom Validation error Laravel
+     *
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = $validator->errors();
+
+        $response = response()->json([
+            'status' => 'error',
+            'message' => 'Validation failed',
+            'errors' => $errors,
+//            'data' => null
+        ], 422);
+
+        throw new HttpResponseException($response);
     }
 }
