@@ -67,7 +67,7 @@ class CarBrandController extends Controller
      */
     public function update(UpdateCarBrandRequest $request, $id)
     {
-        $carBrand = CarBrand::findrFail($id);
+        $carBrand = CarBrand::findOrFail($id);
 
         $carBrand->name_ar = $request->name_ar;
         $carBrand->name_en = $request->name_en;
@@ -84,7 +84,7 @@ class CarBrandController extends Controller
      */
     public function destroy($id)
     {
-        $carBrand = CarBrand::findOfFail($id);
+        $carBrand = CarBrand::findOrFail($id);
         $carBrand->delete();
 
         return $this->successResponse(null,'Deleted Successfully');

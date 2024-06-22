@@ -23,9 +23,10 @@ class UpdateCarBrandRequest extends FormRequest
      */
     public function rules(): array
     {
+        $carBrandId = $this->route('car_brand');
         return [
-            "name_ar" => 'required|unique:car_brands,name_ar|string|max:255',
-            "name_en" => 'required|unique:car_brands,name_en|string|max:255',
+            "name_ar" => 'required|string|max:255|unique:car_brands,name_ar,'.$carBrandId,
+            "name_en" => 'required|string|max:255|unique:car_brands,name_en,'.$carBrandId,
             "image" => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
